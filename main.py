@@ -16,7 +16,7 @@ app = Flask(__name__)
 @app.route('/customer_profile/<pc_id>', methods=['GET'])
 def get(pc_id):
     try:
-        document = cb.get('customer::profile::' + pc_id).value[0]
+        document = cb.get('customer::profile::' + pc_id).value
         filter_param = request.args.get('filter')
         if filter_param == 'FavoriteProducts' and 'FavoriteProducts' in document:
             prod_id = document['FavoriteProducts']
@@ -34,7 +34,7 @@ def update(pc_id):
     key = 'customer::profile::' + pc_id
     print(key)
     try:
-        cb.upsert(key, [data])
+        cb.upsert(key, data)
         return jsonify(data)
     except DocumentNotFoundException as e:
         print(e)
